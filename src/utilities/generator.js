@@ -1,4 +1,3 @@
-
 /**
  * Generates all the possible way to fill squares in Sudoku/Kakuro to get a particular sum
  * 
@@ -7,14 +6,27 @@
  * @param {number[]} excludedDigits The digits that should not be used
  * @returns an array of all the possible ways to fill the squares, each of which is an array of numbers
  */
-export const generatePossibilities = (sum, numSquares, excludedDigits = []) => {
+export const generatePossibilities = (sum, numSquares, excludedDigits = [], includedDigits = []) => {
     // Handle out of bounds inputs
-    if(numSquares <= 0 || sum <= 0 || sum > 45) return [];
+    if(numSquares <= 0 || sum <= 0 || sum > 45 || includedDigits.some(d => excludedDigits.includes(d))) 
+        return [];
+
+    // adjust numbers for calculations if there are already included digits
+    if(includedDigits.length) {
+        sum -= includedDigits.reduce((t, d) => t + d, 0);
+        numSquares -= includedDigits.length;
+        excludedDigits = [...excludedDigits, ...includedDigits];
+        
+        // Handle if there's no squares to fill after accounting for included digits
+        if(numSquares === 0) return (sum === 0) ? includedDigits : []
+    }
+
     // Handle if there's only one square to fill
-    if(numSquares === 1) return (sum <= 9 && !excludedDigits.includes(sum)) ? [[sum]] : [];
+    if(numSquares === 1) 
+        return (sum <= 9 && !excludedDigits.includes(sum)) ? [[sum, ...includedDigits]] : [];
 
     // Keep track of the generated possiblities and the digits that have already been checked
-    const possibilities = [];
+    let possibilities = [];
     const checkedDigits = [];
 
     // Loop over digits and stop before checking digits that would require 
@@ -41,6 +53,10 @@ export const generatePossibilities = (sum, numSquares, excludedDigits = []) => {
         // Add the new possibilites to the list
         possibilities.push(...newPossiblities);
     }
+
+    // Adjust possiblities if there are already included digits
+    if(includedDigits.length)
+        possibilities = possibilities.map(p => [...p, ...includedDigits].sort((a, b) => a - b))
 
     return possibilities;
 }

@@ -7,12 +7,14 @@ const getCellClass = (digit, excludedDigits, includedDigits) => {
     return "";
 }
 
-export default function PossibilitiesList({ possibilities, excludedDigits, includedDigits }) {
+export default function PossibilitiesList({ possibilityGroups, excludedDigits, includedDigits }) {
+    const dividerBorders = "border-dark border-1";
   return (
     <>
-        <table className="table table-striped">
+        <table className="table table-striped table-borderless text-center">
             <thead>
                 <tr>
+                    <th></th>
                     { DIGITS.map(d => 
                         <th key={d} className={getCellClass(d, excludedDigits, includedDigits)}>
                             {d}
@@ -20,15 +22,18 @@ export default function PossibilitiesList({ possibilities, excludedDigits, inclu
                     )}
                 </tr>
             </thead>
-            <tbody>
-                { possibilities.map(p =>
-                    <tr key={p.join("")}>
-                        { DIGITS.map(d => 
-                            <td key={d} className={getCellClass(d, excludedDigits, includedDigits)}>
-                                { p.includes(d) ? d : ""}
-                            </td>
-                        )}
-                    </tr>
+            <tbody className={dividerBorders + " border-bottom"}>
+                { possibilityGroups.map(group =>
+                    group.possibilities.map((p,index) => 
+                        <tr key={p.join("")} className={index === 0 ? dividerBorders + " border-top" : ""}>
+                            <td className="table-light">{group.sum}</td>
+                            { DIGITS.map(d => 
+                                <td key={d} className={getCellClass(d, excludedDigits, includedDigits)}>
+                                    { p.includes(d) ? d : ""}
+                                </td>
+                            )}
+                        </tr>
+                    )
                 )}
             </tbody>
         </table>

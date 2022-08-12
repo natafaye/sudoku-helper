@@ -5,16 +5,23 @@ import PossibilitiesList from './components/PossibilitiesList';
 import SudokuIcon from './components/SudokuIcon';
 
 function App() {
-  const [possibilities, setPossibilities] = useState([]);
+  const [possibilityGroups, setPossibilityGroups] = useState([]);
   const [excludedDigits, setExcludedDigits] = useState([]);
   const [includedDigits, setIncludedDigits] = useState([]);
 
   const showPossibilities = (filters) => {
-    setPossibilities(generatePossibilities(
-      filters.sum - filters.includedDigits.reduce((t, d) => t + d, 0), 
-      filters.numSquares - filters.includedDigits.length, 
-      [...filters.excludedDigits, ...filters.includedDigits],
-    ).map(p => [...p, ...filters.includedDigits].sort((a, b) => a - b)));
+    const groups = filters.sums.map(sum => 
+      ({ 
+        sum: sum,
+        possibilities: generatePossibilities(
+          sum, 
+          filters.numSquares, 
+          filters.excludedDigits, 
+          filters.includedDigits
+        )
+      })
+    )
+    setPossibilityGroups(groups);
     setExcludedDigits(filters.excludedDigits);
     setIncludedDigits(filters.includedDigits);
   }
@@ -35,7 +42,7 @@ function App() {
         </div>
         <div className="col">
           <PossibilitiesList 
-            possibilities={possibilities} 
+            possibilityGroups={possibilityGroups} 
             excludedDigits={excludedDigits}
             includedDigits={includedDigits} />
         </div>

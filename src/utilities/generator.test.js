@@ -54,12 +54,33 @@ describe("generatePossibilities", () => {
         expect(generatePossibilities(45, 9)).toEqual([[1,2,3,4,5,6,7,8,9]])
     })
 
-    it("works with impossible scenarios", () => {
+    it("returns an empty array for impossible scenarios", () => {
         expect(generatePossibilities(54, 10)).toEqual([])
         expect(generatePossibilities(9, 4)).toEqual([])
         expect(generatePossibilities(36, 5)).toEqual([])
         expect(generatePossibilities(1, 0)).toEqual([])
         expect(generatePossibilities(-20, 4)).toEqual([])
         expect(generatePossibilities(5, -6)).toEqual([])
+    })
+    
+    it("works with excluded digits", () => {
+        expect(generatePossibilities(10, 2, [3])).toEqual([[1,9],[2,8],[4,6]])
+        expect(generatePossibilities(15, 2, [1])).toEqual([[6,9],[7,8]])
+        expect(generatePossibilities(17, 4, [1,5])).toEqual([[2,3,4,8]])
+        expect(generatePossibilities(16, 5, [1])).toEqual([])
+        expect(generatePossibilities(38, 7, [0,20])).toEqual([[1,2,5,6,7,8,9],[1,3,4,6,7,8,9],[2,3,4,5,7,8,9]])
+    })
+    
+    it("works with included digits", () => {
+        expect(generatePossibilities(9, 1, [], [3])).toEqual([])
+        expect(generatePossibilities(7, 2, [], [4])).toEqual([[3,4]])
+        expect(generatePossibilities(17, 4, [], [1,8])).toEqual([[1,2,6,8],[1,3,5,8]])
+        expect(generatePossibilities(24, 6, [], [8])).toEqual([[1,2,3,4,6,8]])
+    })
+    
+    it("works with included and excluded digits", () => {
+        expect(generatePossibilities(7, 2, [3], [4])).toEqual([])
+        expect(generatePossibilities(17, 4, [6], [1,8])).toEqual([[1,3,5,8]])
+        expect(generatePossibilities(38, 7, [0,20], [1])).toEqual([[1,2,5,6,7,8,9],[1,3,4,6,7,8,9]])
     })
 })

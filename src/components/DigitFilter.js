@@ -8,13 +8,19 @@ export default function DigitFilter({ name, value, onChange, variant = "primary"
         onChange(name, newValue)
     }
 
+    const clearDigits = () => {
+        onChange(name, [])
+    }
+
+    console.log("rerendering with value", value)
+
     return (
         <div className="btn-group flex-wrap" role="group" aria-label={name}>
             {DIGITS.map(digit =>
                 <React.Fragment key={digit}>
                     <input type="checkbox"
                         className="btn-check"
-                        value={value.includes(digit)}
+                        checked={value.includes(digit)}
                         id={"btn-check-" + name + digit}
                         onChange={() => onCheckChanged(digit)}
                         autoComplete="off" />
@@ -25,6 +31,12 @@ export default function DigitFilter({ name, value, onChange, variant = "primary"
                     </label>
                 </React.Fragment>
             )}
+            <button 
+                className={"btn flex-grow-0 btn-outline-" + variant}
+                type="button"
+                onClick={clearDigits}>
+                X
+            </button>
         </div>
     )
 }
