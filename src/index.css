@@ -1,13 +1,23 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Checkbox Button Group Fix */
+
+.btn-check:focus:not(:checked)+.btn.btn-outline-primary {
+    background-color: #fff;
+    color: #0d6efd
+}
+.btn-check:focus:not(:checked)+.btn.btn-outline-success {
+    background-color: #fff;
+    color: #198754
+}
+.btn-check:focus:not(:checked)+.btn.btn-outline-info {
+    background-color: #fff;
+    color: #0dcaf0
+}
+.btn-check:focus:not(:checked)+.btn.btn-outline-warning {
+    background-color: #fff;
+    color: #ffc107
+}
+.btn-check:focus:not(:checked)+.btn.btn-outline-danger {
+    background-color: #fff;
+    color: #dc3545
 }
