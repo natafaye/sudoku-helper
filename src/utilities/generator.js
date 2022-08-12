@@ -20,8 +20,8 @@ export const generatePossibilities = (sum, numSquares, excludedDigits = [], incl
         // Handle if the included digits are too large or too many
         if(sum < 0 || numSquares < 0) return []
         
-        // Handle if there's no squares to fill after accounting for included digits
-        if(numSquares === 0) return (sum === 0) ? includedDigits : []
+        // Handle if there's no squares or sum to fill after accounting for included digits
+        if(numSquares === 0 || sum === 0) return (sum === 0 && numSquares === 0) ? includedDigits : []
     }
 
     // Handle if there's only one square to fill
