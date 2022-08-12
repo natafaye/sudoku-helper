@@ -1,5 +1,9 @@
 
-/* Checkbox Button Group Fix */
+/* Checkbox Button Group Tweaks */
+
+.btn-group>.btn {
+    border-radius: 0;
+}
 
 .btn-check:focus:not(:checked)+.btn.btn-outline-primary {
     background-color: #fff;

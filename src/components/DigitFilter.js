@@ -15,7 +15,7 @@ export default function DigitFilter({ name, value, onChange, variant = "primary"
     console.log("rerendering with value", value)
 
     return (
-        <div className="btn-group flex-wrap" role="group" aria-label={name}>
+        <div className="btn-group flex-wrap font-monospace" role="group" aria-label={name}>
             {DIGITS.map(digit =>
                 <React.Fragment key={digit}>
                     <input type="checkbox"
