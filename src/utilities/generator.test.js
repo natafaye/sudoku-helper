@@ -76,11 +76,14 @@ describe("generatePossibilities", () => {
         expect(generatePossibilities(7, 2, [], [4])).toEqual([[3,4]])
         expect(generatePossibilities(17, 4, [], [1,8])).toEqual([[1,2,6,8],[1,3,5,8]])
         expect(generatePossibilities(24, 6, [], [8])).toEqual([[1,2,3,4,6,8]])
+        expect(generatePossibilities(7, 2, [], [9,8])).toEqual([])
+        expect(generatePossibilities(7, 2, [], [1,2,3])).toEqual([])
     })
     
     it("works with included and excluded digits", () => {
         expect(generatePossibilities(7, 2, [3], [4])).toEqual([])
         expect(generatePossibilities(17, 4, [6], [1,8])).toEqual([[1,3,5,8]])
         expect(generatePossibilities(38, 7, [0,20], [1])).toEqual([[1,2,5,6,7,8,9],[1,3,4,6,7,8,9]])
+        expect(generatePossibilities(1, 5, [9,3,8], [2,6,7,5])).toEqual([])
     })
 })

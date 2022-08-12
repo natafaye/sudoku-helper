@@ -16,6 +16,9 @@ export const generatePossibilities = (sum, numSquares, excludedDigits = [], incl
         sum -= includedDigits.reduce((t, d) => t + d, 0);
         numSquares -= includedDigits.length;
         excludedDigits = [...excludedDigits, ...includedDigits];
+
+        // Handle if the included digits are too large or too many
+        if(sum < 0 || numSquares < 0) return []
         
         // Handle if there's no squares to fill after accounting for included digits
         if(numSquares === 0) return (sum === 0) ? includedDigits : []
