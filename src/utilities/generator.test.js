@@ -79,6 +79,7 @@ describe("generatePossibilities", () => {
         expect(generatePossibilities(7, 2, [], [9,8])).toEqual([])
         expect(generatePossibilities(7, 2, [], [1,2,3])).toEqual([])
         expect(generatePossibilities(20, 5, [], [2,5,6,7])).toEqual([])
+        expect(generatePossibilities(26, 4, [], [3,6,8,9])).toEqual([[3,6,8,9]])
     })
     
     it("works with included and excluded digits", () => {

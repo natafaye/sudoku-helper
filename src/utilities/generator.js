@@ -7,6 +7,7 @@
  * @returns an array of all the possible ways to fill the squares, each of which is an array of numbers
  */
 export const generatePossibilities = (sum, numSquares, excludedDigits = [], includedDigits = []) => {
+
     // Handle out of bounds inputs
     if(numSquares <= 0 || sum <= 0 || sum > 45 || includedDigits.some(d => excludedDigits.includes(d))) 
         return [];
@@ -21,7 +22,7 @@ export const generatePossibilities = (sum, numSquares, excludedDigits = [], incl
         if(sum < 0 || numSquares < 0) return []
         
         // Handle if there's no squares or sum to fill after accounting for included digits
-        if(numSquares === 0 || sum === 0) return (sum === 0 && numSquares === 0) ? includedDigits : []
+        if(numSquares === 0 || sum === 0) return (sum === 0 && numSquares === 0) ? [[...includedDigits]] : []
     }
 
     // Handle if there's only one square to fill

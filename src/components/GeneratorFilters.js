@@ -1,44 +1,45 @@
 import React, { useState } from 'react'
-import { EXCLUDED_VARIANT, INCLUDED_VARIANT } from '../utilities/constants'
 import { parseNumberInput } from '../utilities/parser';
+import { EXCLUDED_VARIANT, INCLUDED_VARIANT, INITIAL_NUM_SQUARES, INITIAL_SUM } from '../utilities/constants'
 import DigitFilter from './DigitFilter'
 
 export default function GeneratorFilters({ onSubmitFilters }) {
-    const [error, setError] = useState(false);
-    const [filters, setFilters] = useState({
-        numSquares: 2,
-        sums: "10, 12-14",
+    const [parseError, setParseError] = useState(false);
+    const [filterData, setFilterData] = useState({
+        numSquares: INITIAL_NUM_SQUARES,
+        sumString: INITIAL_SUM,
         excludedDigits: [],
-        includedDigits: [],
+        includedDigits: []
     })
 
     const onChange = (event) => {
-        setFilters({ ...filters, [event.target.name]: event.target.value })
+        setFilterData({ ...filterData, [event.target.name]: event.target.value })
     }
 
     const onDigitFilterChange = (name, value) => {
-        setFilters({ ...filters, [name]: value })
+        setFilterData({ ...filterData, [name]: value })
     }
 
     const onSubmit = (event) => {
         event.preventDefault()
 
         // Parse from a string to an array of numbers
-        const parsedSums = parseNumberInput(filters.sums);
+        const parsedSums = parseNumberInput(filterData.sumString);
+        
+        let parseError = true;
 
-        // If it doesn't parse correctly, don't sumit
-        if(!parsedSums) {
-            setError(true);
-            return;
+        if(parsedSums) {
+            parseError = false;
+            onSubmitFilters({
+                ...filterData,
+                numSquares: parseInt(filterData.numSquares),
+                sums: parsedSums,
+                includedDigits: filterData.includedDigits.map(d => parseInt(d)),
+                excludedDigits: filterData.excludedDigits.map(d => parseInt(d))
+            })
         }
 
-        setError(false);
-        onSubmitFilters({
-            numSquares: filters.numSquares,
-            sums: parsedSums,
-            excludedDigits: filters.excludedDigits.map(d => parseInt(d)),
-            includedDigits: filters.includedDigits.map(d => parseInt(d))
-        })
+        setParseError(parseError);
     }
 
     return (
@@ -49,15 +50,15 @@ export default function GeneratorFilters({ onSubmitFilters }) {
                     <input type="number"
                         className="form-control form-control-lg"
                         name="numSquares"
-                        value={filters.numSquares}
+                        value={filterData.numSquares}
                         onChange={onChange} />
                 </div>
                 <div className="col mb-3">
                     <label className="form-label">Sum</label>
                     <input type="text"
-                        className={"form-control form-control-lg " + ((error) ? "border-danger" : "")}
-                        name="sums"
-                        value={filters.sums}
+                        className={"form-control form-control-lg " + ((parseError) ? "border-danger" : "")}
+                        name="sumString"
+                        value={filterData.sumString}
                         onChange={onChange}
                         placeholder="ex: 10, 12-14" />
                 </div>
@@ -67,14 +68,14 @@ export default function GeneratorFilters({ onSubmitFilters }) {
                     <label className="form-label">Included</label>
                     <DigitFilter variant={INCLUDED_VARIANT}
                         name="includedDigits"
-                        value={filters.includedDigits}
+                        value={filterData.includedDigits}
                         onChange={onDigitFilterChange} />
                 </div >
                 <div className="col mb-3">
                     <label className="form-label">Excluded</label>
                     <DigitFilter variant={EXCLUDED_VARIANT}
                         name="excludedDigits"
-                        value={filters.excludedDigits}
+                        value={filterData.excludedDigits}
                         onChange={onDigitFilterChange} />
                 </div>
             </div>

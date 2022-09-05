@@ -12,8 +12,6 @@ export default function DigitFilter({ name, value, onChange, variant = "primary"
         onChange(name, [])
     }
 
-    console.log("rerendering with value", value)
-
     return (
         <div className="btn-group flex-wrap font-monospace" role="group" aria-label={name}>
             {DIGITS.map(digit =>
