@@ -1,26 +1,31 @@
-import React, { useState } from 'react'
+import { useState, type ChangeEvent, type MouseEvent } from 'react'
 import { parseNumberInput } from '../utilities/parser';
 import { EXCLUDED_VARIANT, INCLUDED_VARIANT, INITIAL_NUM_SQUARES, INITIAL_SUM } from '../utilities/constants'
 import DigitFilter from './DigitFilter'
+import { type FiltersParsed } from '../types';
 
-export default function GeneratorFilters({ onSubmitFilters }) {
+type Props = {
+    onSubmitFilters: (filters: FiltersParsed) => void
+}
+
+export default function GeneratorFilters({ onSubmitFilters }: Props) {
     const [parseError, setParseError] = useState(false);
     const [filterData, setFilterData] = useState({
-        numSquares: INITIAL_NUM_SQUARES,
+        numSquares: INITIAL_NUM_SQUARES.toString(),
         sumString: INITIAL_SUM,
         excludedDigits: [],
         includedDigits: []
     })
 
-    const onChange = (event) => {
+    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         setFilterData({ ...filterData, [event.target.name]: event.target.value })
     }
 
-    const onDigitFilterChange = (name, value) => {
+    const onDigitFilterChange = (name: string, value: number[]) => {
         setFilterData({ ...filterData, [name]: value })
     }
 
-    const onSubmit = (event) => {
+    const onSubmit = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
 
         // Parse from a string to an array of numbers

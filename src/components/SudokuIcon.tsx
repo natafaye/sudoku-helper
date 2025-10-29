@@ -1,6 +1,10 @@
-import React from 'react'
 
-export default function SudokuIcon({ variant = "primary", size = 4 }) {
+type Props = {
+    variant: "primary" | "info" | "warning" | "danger" | "success"
+    size: string | number
+}
+
+export default function SudokuIcon({ variant = "primary", size = 4 }: Props) {
     return (
         <div style={{ borderRadius: "5% 50% 5% 50%" }} className={"text-white p-3 fs-" + size + " bg-" + variant}>
             <div className="d-flex text-nowrap overflow-hidden">

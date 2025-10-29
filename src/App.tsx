@@ -1,13 +1,14 @@
-import React, { useReducer, useState } from 'react';
+import { useReducer, useState } from 'react';
 import { INITIAL_NUM_SQUARES, INITIAL_SUM } from './utilities/constants';
-import { initialTabState, SET_CURRENT_TAB_DATA, tabReducer } from './utilities/tabReducer';
+import { initialTabState, SET_CURRENT_TAB_DATA, tabReducer, type Tab } from './utilities/tabReducer';
 import { generatePossibilities } from './utilities/generator';
 import GeneratorFilters from './components/GeneratorFilters';
 import PossibilitiesList from './components/PossibilitiesList';
 import SudokuIcon from './components/SudokuIcon';
 import TabBar from './components/TabBar';
+import type { PossibilityGroup, Filters, FiltersParsed } from './types';
 
-const initialFilters = () => ({
+const initialFilters = (): Filters => ({
     numSquares: INITIAL_NUM_SQUARES,
     sumString: INITIAL_SUM,
     excludedDigits: [],
@@ -22,9 +23,9 @@ const getInitialTabData = () => ({
 function App() {
     const [tabState, tabDispatch] = useReducer(tabReducer, initialTabState(getInitialTabData))
     const [filters, setFilters] = useState(initialFilters)
-    const [possibilityGroups, setPossibilityGroups] = useState([]);
+    const [possibilityGroups, setPossibilityGroups] = useState<PossibilityGroup[]>([]);
 
-    const updateFilters = (newFilters) => {
+    const updateFilters = (newFilters: FiltersParsed) => {
         const groups = newFilters.sums.map(sum => ({
             sum: sum,
             possibilities: generatePossibilities(
@@ -44,7 +45,7 @@ function App() {
         }})
     }
 
-    const onTabSelect = (tab) => {
+    const onTabSelect = (tab: Tab) => {
         setFilters(tab.data.filters);
         setPossibilityGroups(tab.data.possibilityGroups);
     }

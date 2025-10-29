@@ -1,13 +1,19 @@
-import React from 'react'
+import type { PossibilityGroup } from '../types';
 import { DIGITS, EXCLUDED_VARIANT, INCLUDED_VARIANT } from '../utilities/constants'
 
-const getCellClass = (digit, excludedDigits, includedDigits) => {
+const getCellClass = (digit: number, excludedDigits: number[], includedDigits: number[]) => {
     if (excludedDigits.includes(digit)) return "table-" + EXCLUDED_VARIANT;
     if (includedDigits.includes(digit)) return "table-" + INCLUDED_VARIANT;
     return "";
 }
 
-export default function PossibilitiesList({ possibilityGroups, excludedDigits, includedDigits }) {
+type Props = {
+    possibilityGroups: PossibilityGroup[]
+    excludedDigits: number[]
+    includedDigits: number[]
+}
+
+export default function PossibilitiesList({ possibilityGroups, excludedDigits, includedDigits }: Props) {
     const dividerBorders = "border-dark border-1";
     return (
         <table className="table table-striped table-borderless text-center mt-2">

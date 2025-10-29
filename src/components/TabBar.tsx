@@ -1,19 +1,26 @@
-import React from 'react'
-import { CREATE_TAB, DELETE_TAB, SET_CURRENT_TAB } from '../utilities/tabReducer'
+import type { Dispatch } from 'react'
+import { CREATE_TAB, DELETE_TAB, SET_CURRENT_TAB, type Tab, type TabAction, type TabState } from '../utilities/tabReducer'
 
-export default function TabBar({ state, dispatch, makeTitle, onTabSelect }) {
+type Props = {
+    state: TabState
+    dispatch: Dispatch<TabAction>
+    makeTitle: (tab: Tab) => string
+    onTabSelect: (tab: Tab) => void
+}
+
+export default function TabBar({ state, dispatch, makeTitle, onTabSelect }: Props) {
     
-    const setCurrent = (tab) => {
+    const setCurrent = (tab: Tab) => {
         dispatch({ type: SET_CURRENT_TAB, payload: tab.id})
         onTabSelect(tab)
     }
 
     const newTab = () => {
         dispatch({ type: CREATE_TAB })
-        onTabSelect(state.tabs.find(t => t.id === state.current))
+        onTabSelect(state.tabs.find(t => t.id === state.current)!)
     }
     
-    const deleteTab = (id) => {
+    const deleteTab = (id: string) => {
         dispatch({ type: DELETE_TAB, payload: id })
     }
 

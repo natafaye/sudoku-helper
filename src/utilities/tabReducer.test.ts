@@ -1,3 +1,4 @@
+import { describe, it } from "vitest"
 
 describe("tabReducer", () => {
     it("sets up the intitial tab list and current tab correctly", () => {

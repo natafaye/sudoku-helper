@@ -10,7 +10,7 @@
  * @param {string} input the number input that needs to be parsed
  * @returns an array of numbers sorted from lowest to highest
  */
- export const parseNumberInput = (input) => {
+ export const parseNumberInput = (input: string) => {
     // If it's not parseable, return null to indicate an error
     if(!(/^ *((\d+( *- *\d+)?) *(,|$) *)+$/).test(input)) return null;
 
@@ -22,7 +22,7 @@
         const range = group.split("-");
         // If it's not a range then add it to the result
         if(range.length === 1) {
-            const toAdd = parseInt(range)
+            const toAdd = parseInt(range[0])
             if(!isNaN(toAdd)) results.push(toAdd);
         }
         else {

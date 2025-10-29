@@ -1,9 +1,16 @@
 import React from 'react'
 import { DIGITS } from '../utilities/constants'
 
-export default function DigitFilter({ name, value, onChange, variant = "primary" }) {
+type Props = {
+    name: string
+    value: number[]
+    onChange: (name: string, newValue: number[]) => void
+    variant: "primary" | "success" | "warning" | "info" | "danger"
+}
 
-    const onCheckChanged = (digit) => {
+export default function DigitFilter({ name, value, onChange, variant = "primary" }: Props) {
+
+    const onCheckChanged = (digit: number) => {
         const newValue = (value.includes(digit)) ? value.filter(d => d !== digit) : [...value, digit]
         onChange(name, newValue)
     }
