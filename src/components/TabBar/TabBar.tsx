@@ -1,23 +1,20 @@
 import type { Dispatch } from 'react'
-import { CREATE_TAB, DELETE_TAB, SET_CURRENT_TAB, type Tab, type TabAction, type TabState } from '../utilities/tabReducer'
+import { CREATE_TAB, DELETE_TAB, SET_CURRENT_TAB, type Tab, type TabAction, type TabState } from './types'
 
-type Props = {
-    state: TabState
-    dispatch: Dispatch<TabAction>
-    makeTitle: (tab: Tab) => string
-    onTabSelect: (tab: Tab) => void
+type Props<T> = {
+    state: TabState<T>
+    dispatch: Dispatch<TabAction<T>>
+    makeTitle: (tab: Tab<T>) => string
 }
 
-export default function TabBar({ state, dispatch, makeTitle, onTabSelect }: Props) {
+export default function TabBar<T>({ state, dispatch, makeTitle}: Props<T>) {
     
-    const setCurrent = (tab: Tab) => {
+    const setCurrent = (tab: Tab<T>) => {
         dispatch({ type: SET_CURRENT_TAB, payload: tab.id})
-        onTabSelect(tab)
     }
 
     const newTab = () => {
         dispatch({ type: CREATE_TAB })
-        onTabSelect(state.tabs.find(t => t.id === state.current)!)
     }
     
     const deleteTab = (id: string) => {
@@ -36,7 +33,7 @@ export default function TabBar({ state, dispatch, makeTitle, onTabSelect }: Prop
                             <button 
                                 className="btn btn-sm btn-close ms-4 me-1" 
                                 style={{ fontSize: "0.6rem" }}
-                                onClick={() => deleteTab(tab.id)}>
+                                onClick={(event) => (event.stopPropagation(), deleteTab(tab.id))}>
                             </button>
                     </div>
                 </li>

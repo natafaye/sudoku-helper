@@ -1,35 +1,7 @@
 import { v4 as uuid } from 'uuid';
-import type { TabData } from '../types';
+import { CREATE_TAB, DELETE_TAB, SET_CURRENT_TAB, SET_CURRENT_TAB_DATA, type TabAction, type TabState } from './types';
 
-export const CREATE_TAB = "CREATE_TAB" as const;
-export const DELETE_TAB = "DELETE_TAB" as const;
-export const SET_CURRENT_TAB = "SET_CURRENT_TAB" as const;
-export const SET_CURRENT_TAB_DATA = "SET_CURRENT_TAB_DATA" as const;
-
-export const initialTabState = (getInitialTabData: () => TabData) => ({
-    current: "0",
-    getInitialTabData,
-    tabs: [ { id: "0", data: getInitialTabData() } ]
-})
-
-export type Tab = {
-    id: string
-    data: TabData
-}
-
-export type TabState = {
-    current: string,
-    getInitialTabData: () => TabData
-    tabs: Tab[]
-}
-
-export type TabAction = CreateAction | DeleteAction | SetAction | SetDataAction
-type CreateAction = { type: typeof CREATE_TAB, payload?: TabData }
-type DeleteAction = { type: typeof DELETE_TAB, payload: string }
-type SetAction = { type: typeof SET_CURRENT_TAB, payload: string }
-type SetDataAction = { type: typeof SET_CURRENT_TAB_DATA, payload: TabData }
-
-export const tabReducer = (state: TabState, action: TabAction) => {
+export const tabReducer = <T>(state: TabState<T>, action: TabAction<T>) => {
     switch(action.type) {
         case CREATE_TAB: {
             const newTabId = uuid()
@@ -54,7 +26,7 @@ export const tabReducer = (state: TabState, action: TabAction) => {
             }
             else if(state.current === action.payload) {
                 let newCurrentIndex = state.tabs.findIndex(t => t.id === action.payload) - 1
-                if(newCurrentIndex < 0) newCurrentIndex = 1
+                if(newCurrentIndex < 0) newCurrentIndex = 0
                 newCurrent = state.tabs[newCurrentIndex].id
             }
             return { 

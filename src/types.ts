@@ -1,12 +1,9 @@
 export type Filters = {
     sumString: string
+    sums?: number[] | null
     numSquares: number
     excludedDigits: number[]
     includedDigits: number[]
-}
-
-export type FiltersParsed = Filters & {
-    sums: number[]
 }
 
 export type PossibilityGroup = {
@@ -16,5 +13,5 @@ export type PossibilityGroup = {
 
 export type TabData = {
     filters: Filters,
-    possibilityGroups: PossibilityGroup[]
+    results: PossibilityGroup[]
 }

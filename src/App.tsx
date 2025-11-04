@@ -1,53 +1,35 @@
-import { useReducer, useState } from 'react';
-import { INITIAL_NUM_SQUARES, INITIAL_SUM } from './utilities/constants';
-import { initialTabState, SET_CURRENT_TAB_DATA, tabReducer, type Tab } from './utilities/tabReducer';
-import { generatePossibilities } from './utilities/generator';
-import GeneratorFilters from './components/GeneratorFilters';
-import PossibilitiesList from './components/PossibilitiesList';
+import FiltersInput from './components/FiltersInput/FiltersInput';
 import SudokuIcon from './components/SudokuIcon';
-import TabBar from './components/TabBar';
-import type { PossibilityGroup, Filters, FiltersParsed } from './types';
+import ResultsList from './components/ResultsList';
+import { TabBar, useTabBar } from './components/TabBar';
+import type { Filters, TabData } from './types';
+import { generatePossibilities } from './utilities/generator';
 
-const initialFilters = (): Filters => ({
-    numSquares: INITIAL_NUM_SQUARES,
-    sumString: INITIAL_SUM,
-    excludedDigits: [],
-    includedDigits: [],
-})
-
-const getInitialTabData = () => ({
-    filters: initialFilters(),
-    possibilityGroups: []
+const getInitialTabData = (): TabData => ({
+    filters: {
+        numSquares: 2,
+        sumString: "10",
+        sums: [10],
+        excludedDigits: [],
+        includedDigits: [],
+    },
+    results: [{ sum: 10, possibilities: generatePossibilities(10, 2, [], []) }]
 })
 
 function App() {
-    const [tabState, tabDispatch] = useReducer(tabReducer, initialTabState(getInitialTabData))
-    const [filters, setFilters] = useState(initialFilters)
-    const [possibilityGroups, setPossibilityGroups] = useState<PossibilityGroup[]>([]);
+    const { currentData, setCurrentData, tabBarProps } = useTabBar(getInitialTabData)
 
-    const updateFilters = (newFilters: FiltersParsed) => {
-        const groups = newFilters.sums.map(sum => ({
+    const updateFilters = (filters: Filters) => {
+        const results = !filters.sums ? [] : filters.sums.map(sum => ({
             sum: sum,
             possibilities: generatePossibilities(
                 sum,
-                newFilters.numSquares,
-                newFilters.excludedDigits,
-                newFilters.includedDigits
+                filters.numSquares,
+                filters.excludedDigits,
+                filters.includedDigits
             )
         }))
-
-        setFilters(newFilters)
-        setPossibilityGroups(groups);
-        
-        tabDispatch({ type: SET_CURRENT_TAB_DATA, payload: {
-            filters: newFilters,
-            possibilityGroups: groups
-        }})
-    }
-
-    const onTabSelect = (tab: Tab) => {
-        setFilters(tab.data.filters);
-        setPossibilityGroups(tab.data.possibilityGroups);
+        setCurrentData({ filters, results })
     }
 
     return (
@@ -62,18 +44,16 @@ function App() {
             </div>
             <div className="row">
                 <div className="col-sm-6 col-md-5 col-lg-4">
-                    <GeneratorFilters onSubmitFilters={updateFilters} />
+                    <FiltersInput values={currentData.filters} onChange={updateFilters} />
                 </div>
                 <div className="col">
-                    <TabBar 
-                        state={tabState} 
-                        dispatch={tabDispatch}
-                        onTabSelect={onTabSelect}
+                    <TabBar
+                        {...tabBarProps}
                         makeTitle={(tab) => tab.data.filters.sumString + " in " + tab.data.filters.numSquares} />
-                    <PossibilitiesList
-                        possibilityGroups={possibilityGroups}
-                        excludedDigits={filters.excludedDigits}
-                        includedDigits={filters.includedDigits} />
+                    <ResultsList
+                        results={currentData.results}
+                        excludedDigits={currentData.filters.excludedDigits}
+                        includedDigits={currentData.filters.includedDigits} />
                 </div>
             </div>
         </div>

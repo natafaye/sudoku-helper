@@ -1,5 +1,5 @@
-import React from 'react'
-import { DIGITS } from '../utilities/constants'
+import { DIGITS } from '../../utilities/constants'
+import "./DigitFilter.css"
 
 type Props = {
     name: string
@@ -22,26 +22,31 @@ export default function DigitFilter({ name, value, onChange, variant = "primary"
     return (
         <div className="btn-group flex-wrap font-monospace" role="group" aria-label={name}>
             {DIGITS.map(digit =>
-                <React.Fragment key={digit}>
+                <div key={digit}>
                     <input type="checkbox"
                         className="btn-check"
                         checked={value.includes(digit)}
                         id={"btn-check-" + name + digit}
                         onChange={() => onCheckChanged(digit)}
-                        autoComplete="off" />
-                    <label 
+                        autoComplete="off"
+                    />
+                    <label
                         className={"btn flex-grow-0 btn-outline-" + variant}
-                        htmlFor={"btn-check-" + name + digit}> 
-                            {digit} 
+                        htmlFor={"btn-check-" + name + digit}
+                    >
+                        {digit}
                     </label>
-                </React.Fragment>
+                </div>
             )}
-            <button 
-                className={"btn flex-grow-0 btn-outline-" + variant}
-                type="button"
-                onClick={clearDigits}>
-                X
-            </button>
+            <div>
+                <button
+                    className={"btn flex-grow-0 btn-outline-" + variant}
+                    type="button"
+                    onClick={clearDigits}
+                >
+                    X
+                </button>
+            </div>
         </div>
     )
 }

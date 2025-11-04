@@ -1,7 +1,6 @@
-
 /* Checkbox Button Group Tweaks */
 
-.btn-group>.btn {
+.btn-group .btn {
     border-radius: 0;
 }
 

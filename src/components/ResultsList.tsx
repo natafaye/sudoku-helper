@@ -8,12 +8,12 @@ const getCellClass = (digit: number, excludedDigits: number[], includedDigits: n
 }
 
 type Props = {
-    possibilityGroups: PossibilityGroup[]
+    results: PossibilityGroup[]
     excludedDigits: number[]
     includedDigits: number[]
 }
 
-export default function PossibilitiesList({ possibilityGroups, excludedDigits, includedDigits }: Props) {
+export default function ResultsList({ results, excludedDigits, includedDigits }: Props) {
     const dividerBorders = "border-dark border-1";
     return (
         <table className="table table-striped table-borderless text-center mt-2">
@@ -28,7 +28,7 @@ export default function PossibilitiesList({ possibilityGroups, excludedDigits, i
                 </tr>
             </thead>
             <tbody className={dividerBorders + " border-bottom"}>
-                {possibilityGroups.map(group =>
+                {results.map(group =>
                     group.possibilities.map((p, index) =>
                         <tr key={p.join("")} className={index === 0 ? dividerBorders + " border-top" : ""}>
                             <td className="table-light">{group.sum}</td>
